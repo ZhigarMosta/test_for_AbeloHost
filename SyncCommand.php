@@ -8,7 +8,7 @@ class SyncCommand
      * @param $paymentPurpose
      * @return bool
      */
-    protected static function invoiceNumberInPurpose($invoiceName, $paymentPurpose)
+    protected static function invoiceNumberInPurpose($invoiceName, $paymentPurpose): bool
     {
         $prepareStr = preg_replace('/\D/', ' ', $paymentPurpose);
         $prepareStr = preg_replace('/\s+/', ' ', $prepareStr);
@@ -20,6 +20,35 @@ class SyncCommand
             }
         }
         return false;
+    }
+
+    /**
+     * Ищет номер счёта среди числовых последовательностей в назначении платежа.
+     */
+    private function isInvoiceNumberInPurpose(ah $invoice, array $payment): bool
+    {
+        $invoiceName = $invoice['name'];
+        $paymentPurpose = $payment['paymentPurpose'];
+
+        if (strpos($paymentPurpose, $invoiceName) === false
+            && ((int)$invoiceName === 0 || strpos($paymentPurpose, (string)(int)$invoiceName) === false)) {
+            return false;
+        }
+
+        return self::invoiceNumberInPurpose($invoiceName, $paymentPurpose);
+    }
+
+    /**
+     * Ищет дату выставления счёта в назначении платежа.
+     */
+    private function isInvoiceDateInPurpose(ah $invoice, array $payment): bool
+    {
+        if ($invoice['sum'] != $payment['sum']) {
+            return false;
+        }
+
+        $prepareDate = date('d.m.Y', strtotime($invoice['moment']));
+        return strpos($payment['paymentPurpose'], $prepareDate) !== false;
     }
 
     /**
@@ -47,7 +76,7 @@ class SyncCommand
         $updatePayment = [];
         $updateInvoiceOut = [];
         $paymentsIn->each(function($payment) use (
-            $invoicesOut,
+            &$invoicesOut,
             &$updatePayment,
             &$updateInvoiceOut,
             &$isAttachedToInvoiceAttr
@@ -57,33 +86,21 @@ class SyncCommand
             }
 
             foreach ($invoicesOut as &$invoiceOut) {
-                $arr = new ah($invoiceOut);
-                if (empty($arr['organizationAccount']['meta']['href'])) {
+                $invoice = new ah($invoiceOut);
+                if (empty($invoice['organizationAccount']['meta']['href'])) {
                     continue;
                 }
 
-                $notEqualAgent = !TextHelper::isEqual($arr['agent']['meta']['href'], $payment['agent']['meta']['href']);
-                $notEqualAccount = !TextHelper::isEqual($arr['organizationAccount']['meta']['href'], $payment['organizationAccount']['meta']['href']);
-                $notEqualOrganization = !TextHelper::isEqual($arr['organization']['meta']['href'], $payment['organization']['meta']['href']);
+                $notEqualAgent = !TextHelper::isEqual($invoice['agent']['meta']['href'], $payment['agent']['meta']['href']);
+                $notEqualAccount = !TextHelper::isEqual($invoice['organizationAccount']['meta']['href'], $payment['organizationAccount']['meta']['href']);
+                $notEqualOrganization = !TextHelper::isEqual($invoice['organization']['meta']['href'], $payment['organization']['meta']['href']);
 
                 if ($notEqualAgent || $notEqualAccount || $notEqualOrganization) {
                     continue;
                 }
 
-                // найти номер счета в назначении платежа
-                $attachedByPurpose = false;
-                if (strpos($payment['paymentPurpose'], $arr['name']) !== false
-                    || ((int)$arr['name'] !== 0 && strpos($payment['paymentPurpose'], (string)(int)$arr['name']) !== false)) {
-                    $attachedByPurpose = self::invoiceNumberInPurpose($arr['name'], $payment['paymentPurpose']);
-                }
-
-                // найти дату выставления счета в назначении платежа
-                if (!$attachedByPurpose && $arr['sum'] == $payment['sum']) {
-                    $prepareDate = date('d.m.Y', strtotime($arr['moment']));
-                    $attachedByPurpose = strpos($payment['paymentPurpose'], $prepareDate) !== false;
-                }
-
-                if (!$attachedByPurpose && $arr['sum'] != $payment['sum']) {
+                if (!$this->isInvoiceNumberInPurpose($invoice, $payment)
+                    && !$this->isInvoiceDateInPurpose($invoice, $payment)) {
                     continue;
                 }
 
@@ -107,8 +124,4 @@ class SyncCommand
             $msApi->sendEntity('invoiceout', $updateInvoiceOut);
         }
     }
-
-    /** Дальшейшие методы класса */
-
 }
-
