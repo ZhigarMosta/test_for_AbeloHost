@@ -473,4 +473,11 @@ a {
     color: #10b981;
     border: 1px solid #10b981; }
 
+.form-message {
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-radius: 8px;
+  font-size: 14px; }
+
 /*# sourceMappingURL=main.css.map */

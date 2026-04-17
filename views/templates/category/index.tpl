@@ -14,7 +14,8 @@
         <h2>📁 {$category.name}</h2>
         <div class="category-section-actions">
             <a href="?controller=category&action=view&id={$category.id}" class="btn btn-secondary btn-sm">Все статьи ({$category.article_count})</a>
-            <a href="?controller=category&action=showEdit&id={$category.id}" class="category-edit-link">✏️</a>
+            <a href="?controller=category&action=showEdit&id={$category.id}" class="btn btn-sm btn-secondary">✏️</a>
+            <a href="?controller=category&action=delete&id={$category.id}" class="btn btn-sm btn-danger" onclick="return confirm('Удалить категорию и все её статьи?')">🗑️</a>
         </div>
     </div>
     
@@ -39,8 +40,7 @@
 
 {if empty($categories)}
 <div class="empty-state">
-    <p>📭 Категорий пока нет.</p>
-    <a href="?controller=category&action=create" class="btn btn-primary">+ Добавить категорию</a>
+    <p>📭 Категорий с постами нет.</p>
 </div>
 {/if}
 {/block}

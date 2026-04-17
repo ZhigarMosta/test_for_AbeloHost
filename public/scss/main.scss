@@ -658,3 +658,11 @@ a {
         border: 1px solid $success-color;
     }
 }
+
+.form-message {
+    padding: 12px 16px;
+    background: rgba($danger-color, 0.1);
+    color: $danger-color;
+    border-radius: 8px;
+    font-size: 14px;
+}

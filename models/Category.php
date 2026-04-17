@@ -118,4 +118,35 @@ class Category
     {
         return $this->db->execute('DELETE FROM category WHERE id = ?', [$id]);
     }
+
+    public function deleteWithArticles(int $id): void
+    {
+        $articles = $this->db->query(
+            'SELECT a.id, a.image FROM article a
+             JOIN article_category ac ON a.id = ac.article_id
+             WHERE ac.category_id = ?',
+            [$id]
+        );
+
+        foreach ($articles as $article) {
+            $countResult = $this->db->query(
+                'SELECT COUNT(*) as count FROM article_category WHERE article_id = ?',
+                [$article['id']]
+            );
+            $count = (int)($countResult[0]['count'] ?? 0);
+
+            if ($count === 1) {
+                if ($article['image']) {
+                    $filePath = dirname(__DIR__, 2) . '/test/public' . $article['image'];
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+                $this->db->execute('DELETE FROM article WHERE id = ?', [$article['id']]);
+            }
+        }
+
+        $this->db->execute('DELETE FROM article_category WHERE category_id = ?', [$id]);
+        $this->db->execute('DELETE FROM category WHERE id = ?', [$id]);
+    }
 }

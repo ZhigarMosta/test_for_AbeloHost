@@ -31,7 +31,12 @@
             </div>
         </div>
         <div class="form-actions">
+            {if count($categories)}
             <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+            {else}
+            <p class="form-message">Создайте для начала категорию</p>
+            <a href="?controller=category&action=showCreate" class="btn btn-primary">+ Добавить категорию</a>
+            {/if}
             <a href="?controller=category" class="btn btn-secondary">Отмена</a>
         </div>
     </form>

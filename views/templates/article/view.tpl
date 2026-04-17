@@ -4,7 +4,10 @@
     <div class="article-hero">
         <div class="article-actions">
             <a href="?controller=category" class="back-link">← Все категории</a>
-            <a href="?controller=article&action=showEdit&id={$article.id}" class="btn btn-secondary">✏️ Редактировать</a>
+            <div>
+                <a href="?controller=article&action=showEdit&id={$article.id}" class="btn btn-secondary">✏️ Редактировать</a>
+                <a href="?controller=article&action=delete&id={$article.id}" class="btn btn-danger" onclick="return confirm('Удалить статью?')">🗑️ Удалить</a>
+            </div>
         </div>
 
         {if $article.image}

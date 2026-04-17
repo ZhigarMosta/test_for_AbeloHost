@@ -104,7 +104,7 @@ class CategoryController
     public function delete(): void
     {
         $id = (int)($_GET['id'] ?? 0);
-        $this->categoryModel->delete($id);
+        $this->categoryModel->deleteWithArticles($id);
         header('Location: index.php?controller=category');
         exit;
     }

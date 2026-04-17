@@ -36,6 +36,7 @@
                 <div class="article-meta">
                     <span>👁 {$article.views} просмотров</span>
                     <span>📅 {$article.created_at|date_format:"%d.%m.%Y"}</span>
+                    <a href="?controller=article&action=delete&id={$article.id}" class="btn btn-sm btn-danger" onclick="return confirm('Удалить статью?')">🗑️</a>
                 </div>
             </div>
         </div>
