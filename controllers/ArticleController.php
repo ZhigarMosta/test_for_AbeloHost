@@ -141,12 +141,16 @@ class ArticleController
             return null;
         }
 
-        $uploadDir = dirname(__DIR__, 2) . '/test/public/uploads/';
+        $uploadDir = '/var/www/html/public/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
         $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
         $filename = uniqid() . '_' . time() . '.' . strtolower($extension);
         $targetPath = $uploadDir . $filename;
 
-        if (copy($_FILES['image']['tmp_name'], $targetPath)) {
+        if (@copy($_FILES['image']['tmp_name'], $targetPath)) {
             return '/uploads/' . $filename;
         }
 

@@ -8,13 +8,15 @@
     },
     "autoload": {
         "psr-4": {
-            "config\\": "config/",
-            "core\\": "core/",
-            "models\\": "models/",
-            "controllers\\": "controllers/"
+            "config\\\\": "config/",
+            "core\\\\": "core/",
+            "models\\\\": "models/",
+            "controllers\\\\": "controllers/"
         }
     },
     "scripts": {
-        "sass": "sass --watch public/scss/main.scss:public/css/main.css"
+        "sass": "sass --watch public/scss/main.scss:public/css/main.css",
+        "docker:up": "docker compose up -d --build",
+        "docker:down": "docker compose down"
     }
 }
