@@ -1,0 +1,138 @@
+.article-view {
+    .article-hero {
+        margin-bottom: 32px;
+    }
+
+    .article-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 24px;
+    }
+
+    .article-header {
+        margin-bottom: 24px;
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+    }
+
+    .article-meta {
+        display: flex;
+        gap: 24px;
+        font-size: 14px;
+        color: $gray-dark;
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    }
+
+    .article-description {
+        font-size: 18px;
+        color: $secondary-color;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid $gray-medium;
+    }
+
+    .article-content {
+        font-size: 16px;
+        line-height: 1.8;
+        color: $text-dark;
+
+        p {
+            margin-bottom: 16px;
+        }
+    }
+
+    .related-articles {
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 2px solid $gray-medium;
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .article-card {
+            background: white;
+            border: 1px solid $gray-medium;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+
+            &:hover {
+                border-color: $primary-color;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            img {
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+            }
+
+            > div {
+                padding: 12px;
+            }
+
+            h3 {
+                margin: 0 0 8px;
+                font-size: 14px;
+
+                a {
+                    color: $text-dark;
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+            }
+
+            p {
+                margin: 0;
+                font-size: 12px;
+                color: $gray-dark;
+            }
+        }
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: $gray-light;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background: darken($gray-light, 5%);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        input:checked + span,
+        &:has(input:checked) {
+            background: rgba($primary-color, 0.1);
+            color: $primary-color;
+        }
+    }
+}
