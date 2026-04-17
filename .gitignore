@@ -3,7 +3,6 @@
 /.vscode/
 /views/templates_c/
 /views/cache/
-/public/uploads/
 /logs/
 /.env
 *.log
