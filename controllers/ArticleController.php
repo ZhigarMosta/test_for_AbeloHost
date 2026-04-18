@@ -137,7 +137,6 @@ class ArticleController
         }
 
         $fileType = $_FILES['image']['type'];
-
         if (!in_array($fileType, $this->allowedTypes)) {
             return null;
         }
@@ -151,10 +150,12 @@ class ArticleController
         $filename = uniqid() . '_' . time() . '.' . strtolower($extension);
         $targetPath = $uploadDir . $filename;
 
-        if (@copy($_FILES['image']['tmp_name'], $targetPath)) {
+        $tmpFile = $_FILES['image']['tmp_name'];
+        
+        if (@copy($tmpFile, $targetPath)) {
             return '/uploads/' . $filename;
         }
-
+        
         return null;
     }
 }
