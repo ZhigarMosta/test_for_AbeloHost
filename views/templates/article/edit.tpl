@@ -1,8 +1,18 @@
 {extends file="layouts/main.tpl"}
 {block name="content"}
+<script>
+function validateCategories() {
+    const checked = document.querySelectorAll('input[name="categories[]"]:checked');
+    if (checked.length === 0) {
+        alert('Выберите хотя бы одну категорию');
+        return false;
+    }
+    return true;
+}
+</script>
 <div class="form-container">
     <h1>Редактировать статью</h1>
-    <form action="?controller=article&action=update&id={$article.id}" method="POST" enctype="multipart/form-data">
+    <form action="?controller=article&action=update&id={$article.id}" method="POST" enctype="multipart/form-data" onsubmit="return validateCategories()">
         <div class="form-group">
             <label for="image">Изображение</label>
             {if $article.image}
@@ -26,7 +36,7 @@
             <textarea id="content" name="content" rows="8">{$article.content}</textarea>
         </div>
         <div class="form-group">
-            <label>Категории</label>
+            <label>Категории *</label>
             <div class="checkbox-group">
                 {foreach $categories as $category}
                     <label class="checkbox-label">
