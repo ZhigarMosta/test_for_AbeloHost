@@ -1,7 +1,14 @@
-пока пусто
+# Тестовый проект
 
-запуск docker compose up --build -d
-docker compose up -d phpmyadmin
-http://localhost
+```bash
+docker compose up --build -d
+```
 
-http://localhost/phpmyadmin
+## Доступ
+
+| Сервис | URL |
+|--------|-----|
+| Сайт | http://localhost:8080 |
+| phpMyAdmin | http://localhost:8081 |
+
+разработан с использованием OpenCode для UI, чтобы укорить разработки frontend-части. Backend и структура страниц написал самостоятельно.
