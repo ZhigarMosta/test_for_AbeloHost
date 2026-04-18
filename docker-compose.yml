@@ -5,6 +5,7 @@ services:
             - "8080:80"
         volumes:
             - ./:/var/www/html
+            - uploads_data:/var/www/html/public/uploads
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - php
@@ -15,6 +16,8 @@ services:
         build:
             context: .
             dockerfile: ./docker/php/Dockerfile
+        volumes:
+            - uploads_data:/var/www/html/public/uploads
         depends_on:
             mysql:
                 condition: service_healthy
@@ -59,4 +62,5 @@ networks:
         driver: bridge
 
 volumes:
+    uploads_data:
     mysql_data:

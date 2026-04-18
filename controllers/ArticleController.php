@@ -104,6 +104,7 @@ class ArticleController
             'title' => $title,
             'description' => $_POST['description'] ?? '',
             'content' => $_POST['content'] ?? '',
+            'views' => $existingArticle['views'] ?? 0,
         ];
         $categoryIds = $_POST['categories'] ?? [];
         
