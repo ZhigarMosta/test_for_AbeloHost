@@ -16,6 +16,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 RUN mkdir -p public/uploads views/templates_c logs && \
+    chown -R www-data:www-data public/uploads views/templates_c logs && \
     chmod -R 777 public/uploads views/templates_c logs
 
 COPY . .
